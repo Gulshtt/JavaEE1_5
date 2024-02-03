@@ -20,35 +20,45 @@ public class HomeServlet extends HttpServlet {
             PrintWriter pw = response.getWriter();
 
             pw.print("<form action='/home' method='post'>");
-            pw.print("<label>NAME:</label>");
+            pw.print("<label> FULL NAME:</label>");
             pw.print("<input name='name' type='text' style='margin-left:30px;'>");
             pw.print("<br>");
-            pw.print("<label>SURNAME:</label>");
-            pw.print("<input name='surname' type='text' style='margin-left:30px;'>");
+            pw.print("<label>AGE:</label>");
+            pw.print("<input name='age' type='number' style='margin-left:30px;'>");
             pw.print("<br>");
-            pw.print("<label>FOOD:</label>");
-            pw.print("<select name='food'>");
-            pw.print("<option value='Manty-900 KZT'>Manty-900 KZT</option>");
-            pw.print("<option value='Pelmen-600 KZT'>Pelmen-600 KZT</option>");
-            pw.print("<option value='Lagman-800 KZT'>Lagman-800 KZT</option>");
-            pw.print("</select>");
+            pw.print("<div style='display: flex'>");
+            pw.print("<label>GENDER:</label>");
+            pw.print("<div>");
+            pw.print("<input type='radio' name='male'> male");
+            pw.print("<br>");
+            pw.print("<input type='radio' name='female'> female");
+            pw.print("</div>");
+            pw.print("</div>");
             pw.print("<br>");
             pw.print("<button>SEND</button>");
             pw.print("</form>");
-            if(DBManager.user.getName()!=null){
-                User u = DBManager.user;
-                pw.print("<h>" + u.getName() +" "+ u.getSurname() +" is ordered " + u.getFood() + "</h>");
+
+            if(DBManager.user.getName()!=null) {
+
+                if (DBManager.user.getAge() <= 15) {
+                    User u = DBManager.user;
+                    pw.print("<h>Hello Dude " + u.getName() + "!</h>");
+                } else {
+                    User u = DBManager.user;
+                    pw.print("<h>Hello Dear " + u.getName() + "!</h>");
+                }
             }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
-        String food = req.getParameter("food");
+        String gender = req.getParameter("gender");
+        int age = Integer.parseInt(req.getParameter("age"));
         DBManager.user.setName(name);
-        DBManager.user.setSurname(surname);
-        DBManager.user.setFood(food);
+        DBManager.user.setGender(gender);
+        DBManager.user.setAge(age);
         resp.sendRedirect("/home");
     }
 }
